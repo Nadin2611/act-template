@@ -1,0 +1,12 @@
+.print-act-text {
+  width: 21cm;
+  height: 29.7cm;
+  margin: 20px auto;
+  padding: 100px 50px 60px 90px;
+  border: 1px solid #000; /* Контур - чорна рамка шириною 1px */
+  box-sizing: border-box; /* Це важливо для коректного розрахунку розміру сторінки */
+}
+
+.hidden {
+  display: none;
+}

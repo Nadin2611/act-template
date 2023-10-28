@@ -1,3 +1,7 @@
+.hidden {
+  display: none;
+}
+
 .section-title {
   text-align: center;
   font-size: 30px;
@@ -74,10 +78,10 @@ select {
 }
 
 /* стилі друкованого акту */
-.print-act {
+.print-act-text {
   font-family: 'Times New Roman', Times, serif;
   font-size: 12px;
-  line-height: 1.2em; /* Інтервал одинарний */
+  line-height: 1.5em; /* Інтервал одинарний */
   text-align: justify;
 }
 
@@ -126,6 +130,7 @@ select {
 
 .text-sometimes-activies {
 }
+
 .act-period {
   padding-top: 6px;
 }
@@ -139,10 +144,33 @@ select {
 .act-text-center {
   text-align: center;
   font-size: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 .parties-list {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
 }
+
 .parties-item {
+  width: 50%;
+  box-sizing: border-box;
+  padding: 10px;
 }
+
 .parties-title {
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.parties-text {
+  text-align: left;
+}
+
+.parties-text-span {
+  font-weight: bold;
 }

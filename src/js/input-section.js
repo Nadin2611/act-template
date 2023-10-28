@@ -1,16 +1,16 @@
 import { executors } from './executors.js';
+import { formatDateToUkrainian } from './formatedDate.js';
+import { numberToWordsInGenitiveCase, numberToWords } from './number-words.js';
+import { formatCurrency } from './cost-service.js';
 
-// Отримуємо посилання на випадаючий список
 const executorSelect = document.getElementById('executor');
-// const printBtn = document.getElementById('print-button');
 const actFormElement = document.getElementById('actForm');
 const executorData = executors[0];
 
-// Перебираємо масив виконавців і додаємо їх до випадаючого списку
 executors.forEach(executor => {
   const option = document.createElement('option');
   option.value = executor.id;
-  option.textContent = executor.name;
+  option.textContent = executor.shortName;
   executorSelect.appendChild(option);
 });
 
@@ -21,20 +21,47 @@ actFormElement.addEventListener('submit', function (event) {
   formData.forEach((value, key) => {
     formDataObject[key] = value;
   });
-  const actHTML = createMarkup(formData, executorData);
 
-  const actContainer = document.querySelector('.print-act-text');
-  actContainer.innerHTML = actHTML;
+  // Отримайте значення поля "one-time-activities"
+  const oneTimeActivitiesValue = formData.get('one-time-activities');
+  const numOneActive = !isNaN(oneTimeActivitiesValue)
+    ? parseInt(oneTimeActivitiesValue, 10)
+    : 0;
+  const actHTML = createMarkup(formData, executorData, numOneActive);
 
-  // const printButton = document.createElement('button');
-  // printButton.textContent = 'Print Document';
-  // printButton.addEventListener('click', function () {
-  //   window.print();
-  // });
-  // actContainer.appendChild(printButton);
+  const printActPage = window.open('print-act.html', '_blank');
+  printActPage.addEventListener('load', function () {
+    const activitySpan = printActPage.document.getElementById('activitySpan');
+    if (activitySpan) {
+      if (numOneActive !== 0) {
+        const numInWordsOneActive = numberToWordsInGenitiveCase(numOneActive);
+        activitySpan.textContent = `, ${numInWordsOneActive} іншої активності`;
+        activitySpan.classList.remove('hidden');
+      } else {
+        activitySpan.classList.add('hidden');
+      }
+    }
+    printActPage.document.querySelector('.print-act-text').innerHTML = actHTML;
+  });
 });
 
-function createMarkup(formData, executorData) {
+function createMarkup(formData, executorData, numOneActive) {
+  const formattedActDate = formatDateToUkrainian(formData.get('act-date'));
+  const formattedStart = formatDateToUkrainian(formData.get('period-start'));
+  const formattedEnd = formatDateToUkrainian(formData.get('period-end'));
+  const numGroupClasses = formData.get('group-classes'); // Отримуємо число
+  const numInWordsGroupClasses = numberToWordsInGenitiveCase(numGroupClasses); //прописом
+  const numInWordsOneActive = numberToWordsInGenitiveCase(numOneActive);
+  const numberOfChildren = formData.get('number-of-children');
+  const numberUniquePerson = formData.get('unique-person');
+  const numInWordsChildren = numberToWordsInGenitiveCase(numberOfChildren);
+  const numInWordsUniquePerson = numberToWords(numberUniquePerson);
+
+  const serviceCost = formData.get('service-cost');
+  const serviceCostWord = numberToWords(serviceCost);
+
+  const serviceCostText = `${serviceCost} грн.  (${serviceCostWord}  тисяч гривень 00 копійок)`;
+
   const actText = `
 <div class="print-act">
       <h2 class="print-act-title">
@@ -42,11 +69,11 @@ function createMarkup(formData, executorData) {
          <br> здачі - приймання наданих
         послуг №${formData.get('act-number')} 
          <br> до Договору
-        ${executorData.contractNumber} від ${executorData.contractDate}
+        ${executorData.contractNumber} від  ${executorData.contractDate}
       </h2>
       <h3 class="place-act">
         ${formData.get('act-place')}
-        <span class="date-act">${formData.get('act-date')}</span>
+        <span class="date-act">${formattedActDate}</span>
       </h3>
       <p class="text-customer">
         <span class="name-customer">Благодійна організація “Центр освітніх ініціатив”,</span> надалі
@@ -75,29 +102,22 @@ function createMarkup(formData, executorData) {
             Планування, організації та здійснення навчально-виховної,
             організаційно-масової роботи у сфері позашкільної освіти в ${
               executorData.groupName
-            } ${formData.get('planning-period')}
+            } у ${formData.get('planning-period')} 2023 року.
           </p>
           <p class="act-unmber-item">
-            Проведення ${formData.get('group-classes')} регулярних гурткових
-            занять
-            <span class="text-sometimes-activies"
-              >, ${formData.get('one-time-activities')} іншої активності</span
-            >
-            та залучення дітей, підлітків та молоді в кількості ${formData.get(
-              'number-of-children'
-            )} особи, з них -
-            ${formData.get('unique-person')} унікальні особи.
+            Проведення ${numInWordsGroupClasses} регулярних гурткових
+            занять,
+           <span class="text-sometimes-activies" id="activitySpan"> ${numInWordsOneActive} іншої активності
+              </span>
+            та залучення дітей, підлітків та молоді в кількості ${numInWordsChildren} особи, з них -
+            ${numInWordsUniquePerson} унікальні особи.
           </p>
           <p class="act-period">
-            <span class="act-period-text">Період надання послуг:</span>з ${formData.get(
-              'period-start'
-            )} по ${formData.get('period-end')}.
+            <span class="act-period-text">Період надання послуг:</span>з ${formattedStart} по ${formattedEnd}.
           </p>
         </li>
         <li class="act-number-item">
-          <span class="service-cost">Вартість послуг:</span> ${formData.get(
-            'service-cost'
-          )}, без
+          <span class="service-cost">Вартість послуг:</span> ${serviceCostText}, без
           ПДВ.
           <p>Якість послуг відповідає вимогам замовника.</p>
           <p>Сторони взаємних претензій не мають.</p>
@@ -115,27 +135,36 @@ function createMarkup(formData, executorData) {
       <ul class="parties-list">
         <li class="parties-item">
           <h3 class="parties-title">Замовник:</h3>
-          <p>
-            Благодійна організація «Центр освітніх ініціатив» просп. В’ячеслава
-            Чорновола, 4, 79019 Львів ЄДРПОУ 23968135 IBAN UA 52 325365
-            0000000260020047475 в АТ «Кредобанк» info@osvita.org __________
-            Олена ШИНАРОВСЬКА
+          <p class="parties-text">
+           <span class="parties-text-span">Благодійна організація «Центр освітніх ініціатив»</span>
+            <br>просп. В’ячеслава Чорновола, 4, 
+            <br>79019 Львів 
+            <br>
+            <br>ЄДРПОУ 23968135 
+            <br>IBAN UA 52 325365 0000000260020047475 
+            <br>в АТ «Кредобанк» 
+            <br>info@osvita.org 
+            <br>
+            <br>
+            <br>__________    Олена ШИНАРОВСЬКА
           </p>
         </li>
         <li class="parties-item">
           <h3 class="parties-title">Виконавець:</h3>
-          <p>
-            ${executorData.name}
-             ${executorData.address}
-            ${executorData.identificationCode} 
-            ${executorData.bankAccount}
-            ${executorData.email}
-             ${executorData.signature}
+          <p class="parties-text">
+            <span class="parties-text-span">${executorData.shortName}</span>
+            <br>${executorData.address}
+            <br>
+            <br>${executorData.identificationCode} 
+            <br>${executorData.bankAccount}
+            <br>${executorData.email}
+            <br>
+            <br>
+            <br>__________    ${executorData.signature}
           </p>
         </li>
       </ul>
     </div>
-
 `;
   return actText;
 }
