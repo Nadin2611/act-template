@@ -1,6 +1,11 @@
 import { executors } from './executors.js';
 import { formatDateToUkrainian } from './formatedDate.js';
-import { numberToWordsInGenitiveCase, numberToWords } from './number-words.js';
+import {
+  numberToWordsInGenitiveCase,
+  numberToWords,
+  numberToWordsMany,
+  formatMoneyInUkrainian,
+} from './number-words.js';
 import { formatCurrency } from './cost-service.js';
 
 const executorSelect = document.getElementById('executor');
@@ -45,31 +50,49 @@ actFormElement.addEventListener('submit', function (event) {
   });
 });
 
-function createMarkup(formData, executorData, numOneActive) {
+function createMarkup(formData, numOneActive) {
+  const selectedExecutorId = formData.get('executor');
+  const selectedExecutor = executors.find(
+    executor => executor.id === parseInt(selectedExecutorId, 10)
+  );
+
+  if (!selectedExecutor) {
+    // Ви можете додати обробку, якщо виконавець не знайдений
+    return 'Виберіть виконавця';
+  }
+
   const formattedActDate = formatDateToUkrainian(formData.get('act-date'));
   const formattedStart = formatDateToUkrainian(formData.get('period-start'));
   const formattedEnd = formatDateToUkrainian(formData.get('period-end'));
+
   const numGroupClasses = formData.get('group-classes'); // Отримуємо число
   const numInWordsGroupClasses = numberToWordsInGenitiveCase(numGroupClasses); //прописом
+
   const numInWordsOneActive = numberToWordsInGenitiveCase(numOneActive);
+
   const numberOfChildren = formData.get('number-of-children');
   const numberUniquePerson = formData.get('unique-person');
   const numInWordsChildren = numberToWordsInGenitiveCase(numberOfChildren);
   const numInWordsUniquePerson = numberToWords(numberUniquePerson);
 
   const serviceCost = formData.get('service-cost');
-  const serviceCostWord = numberToWords(serviceCost);
+  const serviceCostWord = numberToWordsMany(serviceCost);
 
-  const serviceCostText = `${serviceCost} грн.  (${serviceCostWord}  тисяч гривень 00 копійок)`;
+  function capitalizeFirstLetter(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+  const capitalizedServiceCostWord = capitalizeFirstLetter(serviceCostWord);
+
+  const serviceCostText = `${serviceCost} грн. (${capitalizedServiceCostWord} гривень 00 копійок)`;
 
   const actText = `
-<div class="print-act">
+  <div class="print-act">
       <h2 class="print-act-title">
         <span class="print-act-title-span">АКТ</span>
-         <br> здачі - приймання наданих
+        <br> здачі - приймання наданих
         послуг №${formData.get('act-number')} 
-         <br> до Договору
-        ${executorData.contractNumber} від  ${executorData.contractDate}
+        <br> до Договору
+        ${selectedExecutor.contractNumber} від  ${selectedExecutor.contractDate}
       </h2>
       <h3 class="place-act">
         ${formData.get('act-place')}
@@ -80,10 +103,10 @@ function createMarkup(formData, executorData, numOneActive) {
         “Замовник”, в особі виконавчої директорки Шинаровської Олени Богданівни,
         що діє на підставі Статуту з однієї сторони, та
       </p>
-      <p class="text-performer"></p>
+      <p class="text-performer">
         <span class="name-performer">${
-          executorData.name
-        },</span>надалі – «Виконавець», що діє на
+          selectedExecutor.name
+        },</span> надалі – «Виконавець», що діє на
         підставі виписки ЄДР, з іншої сторони, (в подальшому разом іменуються
         "Сторони", а кожна окремо – "Сторона"), склали цей акт про таке:
       </p>
@@ -91,8 +114,8 @@ function createMarkup(formData, executorData, numOneActive) {
         <li class="act-number-item">
           <p>
             Виконавець надав для Замовника відповідно до Договору №${
-              executorData.contractNumber
-            } від ${executorData.contractDate} в
+              selectedExecutor.contractNumber
+            } в
             рамках проєкту «Зміцнення спроможності молодих людей стати агентами
             змін через розвиток життєвих навичок підлітків та підтримку
             молодіжного активізму у 7-ми західних областях» такі послуги:
@@ -100,15 +123,15 @@ function createMarkup(formData, executorData, numOneActive) {
 
           <p class="act-unmber-item">
             Планування, організації та здійснення навчально-виховної,
-            організаційно-масової роботи у сфері позашкільної освіти в ${
-              executorData.groupName
-            } у ${formData.get('planning-period')} 2023 року.
+            організаційно-масової роботи у сфері позашкільної освіти в
+            ${selectedExecutor.groupName} у ${formData.get(
+    'planning-period'
+  )} 2023 року.
           </p>
           <p class="act-unmber-item">
-            Проведення ${numInWordsGroupClasses} регулярних гурткових
-            занять,
-           <span class="text-sometimes-activies" id="activitySpan"> ${numInWordsOneActive} іншої активності
-              </span>
+            Проведення ${numInWordsGroupClasses} регулярних гурткових занять,
+            <span class="text-sometimes-activies" id="activitySpan"> ${numInWordsOneActive} іншої активності
+            </span>
             та залучення дітей, підлітків та молоді в кількості ${numInWordsChildren} особи, з них -
             ${numInWordsUniquePerson} унікальні особи.
           </p>
@@ -136,7 +159,7 @@ function createMarkup(formData, executorData, numOneActive) {
         <li class="parties-item">
           <h3 class="parties-title">Замовник:</h3>
           <p class="parties-text">
-           <span class="parties-text-span">Благодійна організація «Центр освітніх ініціатив»</span>
+            <span class="parties-text-span">Благодійна організація «Центр освітніх ініціатив»</span>
             <br>просп. В’ячеслава Чорновола, 4, 
             <br>79019 Львів 
             <br>
@@ -152,15 +175,16 @@ function createMarkup(formData, executorData, numOneActive) {
         <li class="parties-item">
           <h3 class="parties-title">Виконавець:</h3>
           <p class="parties-text">
-            <span class="parties-text-span">${executorData.shortName}</span>
-            <br>${executorData.address}
+            <span class="parties-text-span">${selectedExecutor.shortName}</span>
+            <br>${selectedExecutor.address}
             <br>
-            <br>${executorData.identificationCode} 
-            <br>${executorData.bankAccount}
-            <br>${executorData.email}
+            <br>${selectedExecutor.identificationCode} 
+            <br>${selectedExecutor.bankAccount}
+            <br>${selectedExecutor.bank}
+            <br>${selectedExecutor.email}   
             <br>
             <br>
-            <br>__________    ${executorData.signature}
+            <br>__________    ${selectedExecutor.signature}
           </p>
         </li>
       </ul>
