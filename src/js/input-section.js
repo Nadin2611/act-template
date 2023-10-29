@@ -4,9 +4,7 @@ import {
   numberToWordsInGenitiveCase,
   numberToWords,
   numberToWordsMany,
-  formatMoneyInUkrainian,
 } from './number-words.js';
-import { formatCurrency } from './cost-service.js';
 
 const executorSelect = document.getElementById('executor');
 const actFormElement = document.getElementById('actForm');
@@ -91,7 +89,7 @@ function createMarkup(formData, numOneActive) {
       <h2 class="print-act-title">
         <span class="print-act-title-span">АКТ</span>
         <br> здачі - приймання наданих
-        послуг №${formData.get('act-number')} 
+        послуг №${formData.get('act-number')}
         <br> до Договору
         ${selectedExecutor.contractNumber} від  ${selectedExecutor.contractDate}
       </h2>
@@ -161,13 +159,13 @@ function createMarkup(formData, numOneActive) {
           <h3 class="parties-title">Замовник:</h3>
           <p class="parties-text">
             <span class="parties-text-span">Благодійна організація «Центр освітніх ініціатив»</span>
-            <br>просп. В’ячеслава Чорновола, 4, 
-            <br>79019 Львів 
+            <br>просп. В’ячеслава Чорновола, 4,
+            <br>79019 Львів
             <br>
-            <br>ЄДРПОУ 23968135 
-            <br>IBAN UA 52 325365 0000000260020047475 
-            <br>в АТ «Кредобанк» 
-            <br>info@osvita.org 
+            <br>ЄДРПОУ 23968135
+            <br>IBAN UA 52 325365 0000000260020047475
+            <br>в АТ «Кредобанк»
+            <br>info@osvita.org
             <br>
             <br>
             <br>__________    Олена ШИНАРОВСЬКА
@@ -179,10 +177,10 @@ function createMarkup(formData, numOneActive) {
             <span class="parties-text-span">${selectedExecutor.shortName}</span>
             <br>${selectedExecutor.address}
             <br>
-            <br>${selectedExecutor.identificationCode} 
+            <br>${selectedExecutor.identificationCode}
             <br>${selectedExecutor.bankAccount}
             <br>${selectedExecutor.bank}
-            <br>${selectedExecutor.email}   
+            <br>${selectedExecutor.email}
             <br>
             <br>
             <br>__________    ${selectedExecutor.signature}

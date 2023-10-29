@@ -1,0 +1,64 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Стилі для заголовка і шапки */
+.header {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #3a3b3b;
+  color: #fff;
+  padding: 20px 0;
+}
+
+.header-nav-container {
+  display: flex;
+  justify-content: center;
+}
+
+.header-nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header-nav-item {
+  display: inline;
+  margin-right: 20px;
+}
+
+.header-nav-link {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.header-nav-link.active {
+  border-bottom: 2px solid #fff;
+}
+
+/* Стилі для списку з посиланнями */
+.template-container {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.template-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.template-item {
+  margin: 10px 0;
+}
+
+.template-link {
+  text-decoration: none;
+  color: #020008;
+  font-weight: bold;
+  font-size: 18px;
+}
