@@ -1,32 +1,33 @@
 .hidden {
   display: none;
 }
-
+.section-print {
+  padding-top: 20px;
+  padding-right: 20px;
+}
 .section-title {
   text-align: center;
-  font-size: 30px;
+  font-size: 24px;
   font-weight: bold;
-  color: #370bd4;
+  color: #020008;
   margin: 0 auto;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .section-subtitle {
   text-align: right;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: bold;
-  color: #370bd4;
+  color: #020008;
   font-style: italic;
-  margin: 0 auto;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
 }
 /* Стилі для форми */
 .form-title {
   text-align: center;
-  font-size: 25px;
+  font-size: 18px;
   font-weight: bold;
-  color: #370bd4;
-
+  color: #020008;
   margin: 0 auto;
   padding-bottom: 40px;
 }
@@ -51,7 +52,7 @@ input[type='text'],
 input[type='number'],
 input[type='date'],
 select {
-  width: 90%;
+  width: 100%;
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
@@ -67,14 +68,28 @@ select {
   padding: 10px;
 }
 
+fieldset {
+  margin-bottom: 15px;
+}
+
 /* Стилі для кнопки генерації акту */
-#generateButton {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
+#print-button {
+  display: block;
+  margin: 0 auto;
   padding: 10px 20px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #020008;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
   cursor: pointer;
+}
+
+#print-button:hover {
+  background-color: #ece1e1; /* Колір фону при наведенні */
 }
 
 /* стилі друкованого акту */

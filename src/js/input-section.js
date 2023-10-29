@@ -36,11 +36,12 @@ actFormElement.addEventListener('submit', function (event) {
 
   const printActPage = window.open('print-act.html', '_blank');
   printActPage.addEventListener('load', function () {
-    const activitySpan = printActPage.document.getElementById('activitySpan');
+    const activitySpan = printActPage.document.querySelector(
+      '.text-sometimes-activies'
+    );
     if (activitySpan) {
       if (numOneActive !== 0) {
         const numInWordsOneActive = numberToWordsInGenitiveCase(numOneActive);
-        activitySpan.textContent = `, ${numInWordsOneActive} іншої активності`;
         activitySpan.classList.remove('hidden');
       } else {
         activitySpan.classList.add('hidden');
@@ -129,8 +130,8 @@ function createMarkup(formData, numOneActive) {
   )} 2023 року.
           </p>
           <p class="act-unmber-item">
-            Проведення ${numInWordsGroupClasses} регулярних гурткових занять,
-            <span class="text-sometimes-activies" id="activitySpan"> ${numInWordsOneActive} іншої активності
+            Проведення ${numInWordsGroupClasses} регулярних гурткових занять
+            <span class="text-sometimes-activies hidden">, ${numInWordsOneActive} іншої активності
             </span>
             та залучення дітей, підлітків та молоді в кількості ${numInWordsChildren} особи, з них -
             ${numInWordsUniquePerson} унікальні особи.
