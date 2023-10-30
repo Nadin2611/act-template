@@ -2,8 +2,7 @@ import { executors } from './executors.js';
 import { formatDateToUkrainian } from './formatedDate.js';
 import {
   numberToWordsInGenitiveCase,
-  numberToWords,
-  numberToWordsMany,
+    numberToWordsMany,
 } from './number-words.js';
 
 const executorSelect = document.getElementById('executor');
@@ -56,7 +55,6 @@ function createMarkup(formData, numOneActive) {
   );
 
   if (!selectedExecutor) {
-    // Ви можете додати обробку, якщо виконавець не знайдений
     return 'Виберіть виконавця';
   }
 
@@ -68,11 +66,6 @@ function createMarkup(formData, numOneActive) {
   const numInWordsGroupClasses = numberToWordsInGenitiveCase(numGroupClasses); //прописом
 
   const numInWordsOneActive = numberToWordsInGenitiveCase(numOneActive);
-
-  const numberOfChildren = formData.get('number-of-children');
-  const numberUniquePerson = formData.get('unique-person');
-  const numInWordsChildren = numberToWordsInGenitiveCase(numberOfChildren);
-  const numInWordsUniquePerson = numberToWords(numberUniquePerson);
 
   const serviceCost = formData.get('service-cost');
   const serviceCostWord = numberToWordsMany(serviceCost);
@@ -123,7 +116,7 @@ function createMarkup(formData, numOneActive) {
           <p class="act-unmber-item">
             Планування, організації та здійснення навчально-виховної,
             організаційно-масової роботи у сфері позашкільної освіти в
-            ${selectedExecutor.groupName} у ${formData.get(
+            ${selectedExecutor.groupName} на ${formData.get(
     'planning-period'
   )} 2023 року.
           </p>
@@ -131,8 +124,8 @@ function createMarkup(formData, numOneActive) {
             Проведення ${numInWordsGroupClasses} регулярних гурткових занять
             <span class="text-sometimes-activies hidden">, ${numInWordsOneActive} іншої активності
             </span>
-            та залучення дітей, підлітків та молоді в кількості ${numInWordsChildren} особи, з них -
-            ${numInWordsUniquePerson} унікальні особи.
+            та залучення дітей, підлітків та молоді в кількості ${formData.get('number-of-children')} особи, з них -
+            ${formData.get('unique-person')} унікальні особи.
           </p>
           <p class="act-period">
             <span class="act-period-text">Період надання послуг:</span>з ${formattedStart} по ${formattedEnd}.

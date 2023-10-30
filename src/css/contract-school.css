@@ -1,0 +1,49 @@
+.parties-container {
+}
+.parties-container-title {
+    
+}
+.parties-container-list {
+ padding-top: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.parties-container-item {
+      width: 33%;
+  box-sizing: border-box;
+  padding: 10px;
+}
+.parties-container-item-title {
+ font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.parties-container-details span{
+    font-weight: bold;
+}
+
+.parties-container-details {
+}
+
+/* Стилі для кнопки генерації акту */
+.print-button {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #020008;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.print-button:hover {
+  background-color: #ece1e1; /* Колір фону при наведенні */
+}
