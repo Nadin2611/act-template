@@ -115,7 +115,7 @@ function createMarkup(formData, numOneActive) {
 
           <p class="act-unmber-item">
             Планування, організації та здійснення навчально-виховної,
-            організаційно-масової роботи у сфері позашкільної освіти в
+            організаційно-масової роботи у сфері позашкільної освіти в рамках
             ${selectedExecutor.groupName} на ${formData.get(
     'planning-period'
   )} 2023 року.

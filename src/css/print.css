@@ -10,3 +10,9 @@
 .hidden {
   display: none;
 }
+
+@media print {
+  .print-act-text {
+    border: none; /* Remove the border for print media */
+  }
+}

@@ -73,7 +73,7 @@ fieldset {
 }
 
 /* Стилі для кнопки генерації акту */
-#print-button {
+.print-button {
   display: block;
   margin: 0 auto;
   padding: 10px 20px;
@@ -88,7 +88,7 @@ fieldset {
   cursor: pointer;
 }
 
-#print-button:hover {
+.print-button:hover {
   background-color: #ece1e1; /* Колір фону при наведенні */
 }
 
