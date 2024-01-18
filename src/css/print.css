@@ -12,7 +12,10 @@
 }
 
 @media print {
+  .header {
+    display: none;
+  }
   .print-act-text {
-    border: none; /* Remove the border for print media */
+    border: none;
   }
 }
